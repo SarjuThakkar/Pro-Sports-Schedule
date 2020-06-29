@@ -8,7 +8,7 @@ from datetime import date
 def index():
         currDate = date.today()
         games = Game.query.filter(Game.date == currDate).all()
-        games.sort(key=time)
+        games.sort(key=lambda x: x.time)
         leagues = [r.league for r in db.session.query(Game.league).distinct()]
         leaguesChecked = {}
         for league in leagues:
@@ -32,5 +32,5 @@ def index():
                                 tvsChecked[tv] = ''
                 currDate = request.form.get('datePicker')
                 games = Game.query.filter(Game.date == currDate).filter((Game.league.in_(leaguesChosen))).filter(Game.tv.in_(tvsChosen)).all()
-                games.sort(key=time)
+                games.sort(key=lambda x: x.time)
         return render_template('index.html', title='Home', games=games, leagues=leagues, tvs=tvs, currDate=currDate, leaguesChecked=leaguesChecked, tvsChecked=tvsChecked)
